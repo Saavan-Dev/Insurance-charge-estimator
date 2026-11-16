@@ -6,6 +6,7 @@ Sex and smoker use the training codes: female/no = 0, male/yes = 1. The page map
 
 ## Run
 
+
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
