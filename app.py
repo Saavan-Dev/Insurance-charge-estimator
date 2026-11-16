@@ -71,14 +71,16 @@ def main():  # Step 18: build the page. Streamlit reruns this function after eve
         "hospital_expenditure": hospital_expenditure,
         "annual_salary": annual_salary,
     }
-    estimate = predict_charges(model, scaler, values)  # Step 34: scale the row, then predict.
-    st.metric("Estimated charges", f"{estimate:,.2f}")  # Step 35: show the number with thousands separators.
+    if st.button("Predict"):  # Step 34: a widget change reruns the page with the button off, so save the charge.
+        st.session_state["estimate"] = predict_charges(model, scaler, values)  # Step 35: scale the row, then predict.
+    if "estimate" in st.session_state:  # Step 36: keep the last charge on screen until the next click.
+        st.metric("Estimated charges", f"{st.session_state['estimate']:,.2f}")  # Step 37: thousands separators.
 
-    with st.expander("Dataset"):  # Step 36: extra panel; click to open the source table.
-        data = pd.read_csv(ROOT / "new_insurance_data.csv")  # Step 37: raw file. It still has columns the model does not use.
-        st.write(f"{len(data)} rows, {len(data.columns)} columns")  # Step 38: size of that file.
-        st.dataframe(data.head(20), use_container_width=True)  # Step 39: first 20 rows only, wide enough for the page.
+    with st.expander("Dataset"):  # Step 38: extra panel; click to open the source table.
+        data = pd.read_csv(ROOT / "new_insurance_data.csv")  # Step 39: raw file. It still has columns the model does not use.
+        st.write(f"{len(data)} rows, {len(data.columns)} columns")  # Step 40: size of that file.
+        st.dataframe(data.head(20), use_container_width=True)  # Step 41: first 20 rows only, wide enough for the page.
 
 
-if __name__ == "__main__":  # Step 40: run the page when you start this file, not when check.py imports it.
+if __name__ == "__main__":  # Step 42: run the page when you start this file, not when check.py imports it.
     main()
